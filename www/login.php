@@ -2,26 +2,27 @@
 		
 	//start session
 	session_start();	
-
+	include('database.php');
+	include('functions.php');
+	
+	//connect to database
+	$conn=connect_db();
+	
 	//get username and password from $_POST
-	$username = $_POST["username"];
-	$password = $_POST["password"];
+	$username = sanitizeString($_POST["username"]);
+	$password = sanitizeString($_POST["password"]);
 
-	$dbhost = "localhost";	
-	$dbuser = "root";
-	$dbpass = "";
-	$dbname = "mydb";
+	
+	
 
-	$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	if( mysqli_connect_errno($conn)){
-	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+	$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
 
-	$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
-
-	$num_of_rows = mysqli_num_rows($result);
+	$user = mysqli_fetch_row($result);
+	
+	
+	
 	//Check in the DB
-	if($num_of_rows > 0){
+	if(password_verify('$password',$user[2])){
 
 		//If authenticated: say hello!
 		$_SESSION["username"] = $username;
