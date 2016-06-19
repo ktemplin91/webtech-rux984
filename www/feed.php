@@ -17,8 +17,10 @@
 	//user information 
 	$row = mysqli_fetch_assoc($result);
 
+	
 	echo "<h1>Welcome back ".$row['Name']."!</h1>";
 	echo "<img src='".$row['profile_pic']."'>";
+	$profile_pic= $row['profile_pic'];
 	//echo "<hr>";
 
 	echo "<form method='POST' action='posts.php'>";
@@ -48,7 +50,6 @@
 		//coments results
 		$result_comments = mysqli_query($conn, "SELECT * FROM comment WHERE PID='$row[0]'");
 		$num_of_rows2 = mysqli_num_rows($result_comments);
-		
 		if($num_of_rows2 ==0){
 			
 			
@@ -68,7 +69,7 @@
 		echo "<input type='hidden' name='PID' value='$row[0]'>";
 		echo "<input type='hidden' name='UID' value='$row[1]'>";
 		echo "<input type='hidden' name='username' value='$username'>";
-		echo "<input type='hidden' name='profile_pic' value='$row[3]'>";
+		echo "<input type='hidden' name='profile_pic' value='$profile_pic'>";
 		echo "<p><input type='submit' value='Comment'></p>";	
 		echo "</form>";
 		//echo "<form action='comments.php' method='POST'> <input type='hidden' name='PID' value='$row[0]'> <input type='submit' value='Comment'></form>";
